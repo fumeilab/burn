@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Burn — LLM Cost Calculator</title>
-    <meta name="description" content="Compare LLM API pricing across OpenAI, Anthropic, Google, Meta, Mistral, DeepSeek, and Qwen. Calculate your monthly costs and find the cheapest model for your usage.">
+    <meta name="description" content="Compare LLM API pricing across OpenAI, Anthropic, Google, xAI, Meta, Mistral, DeepSeek, and Qwen. Calculate your monthly costs and find the cheapest model for your usage.">
     <meta name="keywords" content="LLM pricing, API costs, GPT pricing, Claude pricing, Gemini pricing, AI model comparison, token calculator">
     <meta property="og:title" content="Burn — LLM Cost Calculator">
     <meta property="og:description" content="Compare LLM API pricing across every major provider. Input your usage, see what you'll pay.">
@@ -714,34 +714,53 @@
 
     // ========== DATA ==========
     var models = [
+        // OpenAI — GPT-5 family
+        { provider: "OpenAI", model: "GPT-5.4", inputCost: 2.50, outputCost: 15.00, capabilities: ["text", "vision", "code", "reasoning"] },
+        { provider: "OpenAI", model: "GPT-5.4 Pro", inputCost: 30.00, outputCost: 180.00, capabilities: ["text", "vision", "code", "reasoning"] },
+        { provider: "OpenAI", model: "GPT-5 Mini", inputCost: 0.25, outputCost: 2.00, capabilities: ["text", "code"] },
+        // OpenAI — GPT-4.1 family
+        { provider: "OpenAI", model: "GPT-4.1", inputCost: 2.00, outputCost: 8.00, capabilities: ["text", "vision", "code"] },
+        { provider: "OpenAI", model: "GPT-4.1 mini", inputCost: 0.40, outputCost: 1.60, capabilities: ["text", "vision", "code"] },
+        // OpenAI — GPT-4o (legacy)
         { provider: "OpenAI", model: "GPT-4o", inputCost: 2.50, outputCost: 10.00, capabilities: ["text", "vision", "code"] },
         { provider: "OpenAI", model: "GPT-4o mini", inputCost: 0.15, outputCost: 0.60, capabilities: ["text", "vision", "code"] },
-        { provider: "OpenAI", model: "GPT-5.4", inputCost: 5.00, outputCost: 15.00, capabilities: ["text", "vision", "code"] },
-        { provider: "OpenAI", model: "GPT-5.4 Thinking", inputCost: 10.00, outputCost: 30.00, capabilities: ["text", "vision", "code", "reasoning"] },
-        { provider: "OpenAI", model: "o3", inputCost: 10.00, outputCost: 40.00, capabilities: ["text", "code", "reasoning"] },
-        { provider: "OpenAI", model: "o3-mini", inputCost: 1.10, outputCost: 4.40, capabilities: ["text", "code", "reasoning"] },
+        // OpenAI — o-series reasoning
+        { provider: "OpenAI", model: "o3", inputCost: 2.00, outputCost: 8.00, capabilities: ["text", "code", "reasoning"] },
+        { provider: "OpenAI", model: "o4-mini", inputCost: 1.10, outputCost: 4.40, capabilities: ["text", "code", "reasoning"] },
+        // Anthropic
+        { provider: "Anthropic", model: "Claude Opus 4.6", inputCost: 5.00, outputCost: 25.00, capabilities: ["text", "vision", "code", "reasoning"] },
         { provider: "Anthropic", model: "Claude Sonnet 4.6", inputCost: 3.00, outputCost: 15.00, capabilities: ["text", "vision", "code"] },
-        { provider: "Anthropic", model: "Claude Opus 4.6", inputCost: 15.00, outputCost: 75.00, capabilities: ["text", "vision", "code", "reasoning"] },
-        { provider: "Anthropic", model: "Claude Haiku 4.5", inputCost: 0.80, outputCost: 4.00, capabilities: ["text", "vision", "code"] },
-        { provider: "Google", model: "Gemini 2.5 Flash", inputCost: 0.15, outputCost: 0.60, capabilities: ["text", "vision", "code"] },
+        { provider: "Anthropic", model: "Claude Haiku 4.5", inputCost: 1.00, outputCost: 5.00, capabilities: ["text", "vision", "code"] },
+        // Google
         { provider: "Google", model: "Gemini 2.5 Pro", inputCost: 1.25, outputCost: 10.00, capabilities: ["text", "vision", "code", "reasoning"] },
-        { provider: "Google", model: "Gemini 3.1 Flash-Lite", inputCost: 0.075, outputCost: 0.30, capabilities: ["text", "vision"] },
-        { provider: "Meta", model: "Llama 4 Scout", inputCost: 0.17, outputCost: 0.17, capabilities: ["text", "code"] },
-        { provider: "Meta", model: "Llama 4 Maverick", inputCost: 0.27, outputCost: 0.27, capabilities: ["text", "code"] },
+        { provider: "Google", model: "Gemini 2.5 Flash", inputCost: 0.30, outputCost: 2.50, capabilities: ["text", "vision", "code"] },
+        { provider: "Google", model: "Gemini 3 Flash", inputCost: 0.50, outputCost: 3.00, capabilities: ["text", "vision", "code"] },
+        { provider: "Google", model: "Gemini 3.1 Flash-Lite", inputCost: 0.25, outputCost: 1.50, capabilities: ["text", "vision"] },
+        // xAI
+        { provider: "xAI", model: "Grok 4", inputCost: 3.00, outputCost: 15.00, capabilities: ["text", "vision", "code", "reasoning"] },
+        { provider: "xAI", model: "Grok 4.1 Fast", inputCost: 0.20, outputCost: 0.50, capabilities: ["text", "vision", "code"] },
+        // Meta (hosted pricing via DeepInfra/Together)
+        { provider: "Meta", model: "Llama 4 Scout", inputCost: 0.11, outputCost: 0.34, capabilities: ["text", "code"] },
+        { provider: "Meta", model: "Llama 4 Maverick", inputCost: 0.15, outputCost: 0.60, capabilities: ["text", "code"] },
+        // Mistral
         { provider: "Mistral", model: "Mistral Small", inputCost: 0.10, outputCost: 0.30, capabilities: ["text", "code"] },
-        { provider: "Mistral", model: "Mistral Large", inputCost: 2.00, outputCost: 6.00, capabilities: ["text", "vision", "code"] },
-        { provider: "DeepSeek", model: "DeepSeek V3", inputCost: 0.27, outputCost: 1.10, capabilities: ["text", "code"] },
-        { provider: "DeepSeek", model: "DeepSeek R1", inputCost: 0.55, outputCost: 2.19, capabilities: ["text", "code", "reasoning"] },
-        { provider: "Qwen", model: "Qwen 3.5 Plus", inputCost: 0.80, outputCost: 2.00, capabilities: ["text", "code"] },
+        { provider: "Mistral", model: "Mistral Medium 3", inputCost: 0.40, outputCost: 2.00, capabilities: ["text", "code"] },
+        { provider: "Mistral", model: "Mistral Large", inputCost: 0.50, outputCost: 1.50, capabilities: ["text", "vision", "code"] },
+        // DeepSeek
+        { provider: "DeepSeek", model: "DeepSeek V3", inputCost: 0.28, outputCost: 0.42, capabilities: ["text", "code"] },
+        { provider: "DeepSeek", model: "DeepSeek R1", inputCost: 0.50, outputCost: 2.18, capabilities: ["text", "code", "reasoning"] },
+        // Qwen (Global/US endpoint pricing)
+        { provider: "Qwen", model: "Qwen 3.5 Plus", inputCost: 0.115, outputCost: 0.688, capabilities: ["text", "code"] },
         { provider: "Qwen", model: "Qwen Max", inputCost: 1.60, outputCost: 6.40, capabilities: ["text", "vision", "code"] }
     ];
 
-    var providers = ["OpenAI", "Anthropic", "Google", "Meta", "Mistral", "DeepSeek", "Qwen"];
+    var providers = ["OpenAI", "Anthropic", "Google", "xAI", "Meta", "Mistral", "DeepSeek", "Qwen"];
 
     var providerColors = {
         "OpenAI": "#10a37f",
         "Anthropic": "#cc8a4a",
         "Google": "#4285f4",
+        "xAI": "#e5e5e5",
         "Meta": "#007aff",
         "Mistral": "#ff7518",
         "DeepSeek": "#4a90e2",
